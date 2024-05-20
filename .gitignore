@@ -2,6 +2,7 @@
 .notes/
 .DS_Store
 .vscode
+bookmarks/media/users/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
