@@ -128,3 +128,7 @@ LOGOUT_URL = "logout"
 
 # DEVELOPMENT: lets Django email to the standard output instead of through SMTP server
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+# location of media files
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR / "media"

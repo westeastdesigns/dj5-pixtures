@@ -42,4 +42,8 @@ urlpatterns = [
     path("", include("django.contrib.auth.urls")),
     # user dashboard url
     path("", views.dashboard, name="dashboard"),
+    # user registration url
+    path("register/", views.register, name="register"),
+    # url for user profile editing
+    path("edit/", views.edit, name="edit"),
 ]
