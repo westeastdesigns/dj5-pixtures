@@ -33,6 +33,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # third-party package
+    "social_django",
 ]
 
 MIDDLEWARE = [
@@ -132,3 +134,8 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # location of media files
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",
+    "account.authentication.EmailAuthBackend",
+]
