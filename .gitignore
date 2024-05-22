@@ -4,6 +4,10 @@
 .vscode
 bookmarks/media/users/
 
+# development keys/certificates
+cert.crt
+cert.key
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
