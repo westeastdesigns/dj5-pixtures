@@ -5,6 +5,8 @@
 bookmarks/media/users/
 
 # development keys/certificates
+cern.crt
+cern.key
 cert.crt
 cert.key
 
