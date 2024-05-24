@@ -1,7 +1,7 @@
 Pixtures is a social media web application project in progress; this version is being 
 created with Python 3.12.3 and Django 5.0.6. 
 
-![Pixtures](.notes/pixtures_logo_120x120.jpg)
+![Pixtures](pixtures_logo_120x120.jpg)
 
 Features
 * Authentication for user registration, logging in, profile editing, password editing 
