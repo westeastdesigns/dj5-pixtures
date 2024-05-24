@@ -1,3 +1,38 @@
-from django.shortcuts import render
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, render
 
-# Create your views here.
+from .forms import ImageCreateForm
+
+
+# defines views for the images app
+@login_required
+def image_create(request):
+    """image_create creates a view for authenticated users to store images on the site.
+
+    Args:
+        request (GET): gets the http response to create an instance of the form
+        request (POST): validates the form
+
+    Returns:
+        object: Image object is saved to the database
+    """
+    if request.method == "POST":
+        # form is sent
+        form = ImageCreateForm(data=request.POST)
+        if form.is_valid():
+            # form data is valid
+            cd = form.cleaned_data
+            new_image = form.save(commit=False)
+            # assign current user to the item
+            new_image.user = request.user
+            new_image.save()
+            messages.success(request, "Image added successfully!")
+            # redirect to new created item detail view
+            return redirect(new_image.get_absolute_url())
+    else:
+        # build form with data provided by the bookmarklet via GET
+        form = ImageCreateForm(data=request.GET)
+    return render(
+        request, "images/image/create.html", {"section": "images", "form": form}
+    )
