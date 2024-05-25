@@ -38,8 +38,9 @@ INSTALLED_APPS = [
     # admindocs
     "django.contrib.admindocs",
     # third-party packages
-    "social_django",
     "django_extensions",
+    "easy_thumbnails",
+    "social_django",
     # local applications
     "images.apps.ImagesConfig",
 ]
