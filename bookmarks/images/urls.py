@@ -6,4 +6,10 @@ app_name = "images"
 
 urlpatterns = [
     path("create/", views.image_create, name="create"),
+    # detail view for an image
+    path(
+        "detail/<int:id>/<slug:slug>/",
+        views.image_detail,
+        name="detail",
+    ),
 ]

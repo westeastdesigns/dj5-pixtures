@@ -1,8 +1,9 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import ImageCreateForm
+from .models import Image
 
 
 # defines views for the images app
@@ -35,4 +36,24 @@ def image_create(request):
         form = ImageCreateForm(data=request.GET)
     return render(
         request, "images/image/create.html", {"section": "images", "form": form}
+    )
+
+
+def image_detail(request, id, slug):
+    """image_detail simple view that displays an image
+
+    Args:
+        request (Image): :model:`Images.image`
+        id (Integer): id of image
+        slug (String): url
+
+    Returns:
+        string: url images/image/detail.html
+        dict: section, images, image
+    """
+    image = get_object_or_404(Image, id=id, slug=slug)
+    return render(
+        request,
+        "images/image/detail.html",
+        {"section": "images", "image": image},
     )
