@@ -2,7 +2,7 @@
 .notes/
 .DS_Store
 .vscode
-bookmarks/media/users/
+bookmarks/media/
 
 # development keys/certificates
 cern.crt
