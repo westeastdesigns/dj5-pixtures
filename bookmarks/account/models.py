@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.db import models
 
 
@@ -22,3 +23,47 @@ class Profile(models.Model):
 
     def __str__(self):
         return f"Profile of {self.user.username}"
+
+
+class Contact(models.Model):
+    """Contact model contains a many-to-many relationship between users; those models
+    are based on Django's User model. Contact is an intermediate model for that
+    relationship, so that it does not alter the User model and stores the time that the
+    relationship was created.
+
+    Args:
+        models (user): contains variables for user_from, user_to, and created.
+
+    Returns:
+        string: a string is returned with the names of the users in the relationship. It
+        also is indexed in descending order, by the time the relationship was created.
+            user_from: the user who chooses to follow another user, user_to
+            user_to: the user who is being followed by user_from
+    """
+
+    user_from = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name="rel_from_set", on_delete=models.CASCADE
+    )
+    user_to = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name="rel_to_set", on_delete=models.CASCADE
+    )
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=["-created"]),
+        ]
+        ordering = ["-created"]
+
+    def __str__(self):
+        return f"{self.user_from} follows {self.user_to}"
+
+
+# dynamically add the following fields to User
+user_model = get_user_model()
+user_model.add_to_class(
+    "following",
+    models.ManyToManyField(
+        "self", through=Contact, related_name="followers", symmetrical=False
+    ),
+)
