@@ -48,6 +48,8 @@ urlpatterns = [
     path("edit/", views.edit, name="edit"),
     # url for list of active users
     path("users/", views.user_list, name="user_list"),
+    # url for following a user
+    path("users/follow/", views.user_follow, name="user_follow"),
     # url for details about a particular user
     path("users/<username>/", views.user_detail, name="user_detail"),
 ]

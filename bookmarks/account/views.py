@@ -1,11 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, render
+from django.views.decorators.http import require_POST
 
 from .forms import LoginForm, ProfileEditForm, UserEditForm, UserRegistrationForm
-from .models import Profile
+from .models import Contact, Profile
 
 # retrieve the Django User model dynamically
 User = get_user_model()
@@ -141,7 +142,9 @@ def user_list(request):
     """
     users = User.objects.filter(is_active=True)
     return render(
-        request, "account/user/list.html", {"section": "people", "users": users}
+        request,
+        "account/user/list.html",
+        {"section": "people", "users": users},
     )
 
 
@@ -158,5 +161,35 @@ def user_detail(request, username):
     """
     user = get_object_or_404(User, username=username, is_active=True)
     return render(
-        request, "account/user/detail.html", {"section": "people", "user": user}
+        request,
+        "account/user/detail.html",
+        {"section": "people", "user": user},
     )
+
+
+@require_POST
+@login_required
+def user_follow(request):
+    """user_follow lets logged-in users toggle whether they are following a user. This
+    can create or delete the relationship between users, using the custom intermediary
+    :model:`account.Contact`
+
+    Args:
+        request (POST): looking for id of user and follow action
+
+    Returns:
+        JsonResponse: status of ok or error
+    """
+    user_id = request.POST.get("id")
+    action = request.POST.get("action")
+    if user_id and action:
+        try:
+            user = User.objects.get(id=user_id)
+            if action == "follow":
+                Contact.objects.get_or_create(user_from=request.user, user_to=user)
+            else:
+                Contact.objects.filter(user_from=request.user, user_to=user).delete()
+            return JsonResponse({"status": "ok"})
+        except User.DoesNotExist:
+            return JsonResponse({"status": "error"})
+    return JsonResponse({"status": "error"})
