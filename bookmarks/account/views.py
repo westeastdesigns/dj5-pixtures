@@ -1,11 +1,14 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 
 from .forms import LoginForm, ProfileEditForm, UserEditForm, UserRegistrationForm
 from .models import Profile
+
+# retrieve the Django User model dynamically
+User = get_user_model()
 
 
 # These classes define the views for the account application
@@ -123,4 +126,37 @@ def edit(request):
         request,
         "account/edit.html",
         {"user_form": user_form, "profile_form": profile_form},
+    )
+
+
+@login_required
+def user_list(request):
+    """user_list is a simple list view for active User objects
+
+    Args:
+        request (User model): gets all User objects
+
+    Returns:
+        HttpResponse: sends a list of all active User objects
+    """
+    users = User.objects.filter(is_active=True)
+    return render(
+        request, "account/user/list.html", {"section": "people", "users": users}
+    )
+
+
+@login_required
+def user_detail(request, username):
+    """user_detail is a detail view for User objects.
+
+    Args:
+        request (User model): check User objects
+        username (string): used to retrieve the active user with the given username
+
+    Returns:
+        HttpResponse: 404 if no active user with the given username is found
+    """
+    user = get_object_or_404(User, username=username, is_active=True)
+    return render(
+        request, "account/user/detail.html", {"section": "people", "user": user}
     )

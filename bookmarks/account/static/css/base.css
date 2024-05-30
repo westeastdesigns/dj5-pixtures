@@ -287,3 +287,10 @@ img.user-detail {
     font-style:italic;
     color:#ccc;
 }
+/* default user avatar */
+.avatar {
+    vertical-align: middle;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+  }

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load thumbnail %}
+
+{% block title %}People{% endblock %}
+
+{% block content %}
+    <h1>People</h1>
+    <div id="people-list">
+        {% for user in users %}
+            <div class="user">
+                <a href="{{ user.get_absolute_url }}">
+                    {% comment %} if user doesnt have an image, use a default image {% endcomment %}
+                    {% if user.profile.photo %}
+                        {# photo thumbnail #}
+                        <img src="{% thumbnail user.profile.photo 180x180 %}">
+                    {% else %}
+                        {# default image, using a basic one from w3 for now #}
+                        {% comment %} <img src="{% thumbnail object.image|default:'media/default_image.png' 180x180 %}"> {% endcomment %}
+                        <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar" class="avatar">
+                    {% endif %}
+                </a>
+                <div class="info">
+                    <a href="{{ user.get_absolute_url }}" class="title">
+                        {% comment %} if user has a full name {% endcomment %}
+                        {% if user.get_full_name %}
+                            {{ user.get_full_name }}
+                        {% else %}
+                            {% comment %} if user has no full name, use their username {% endcomment %}
+                            {{ request.user.username }}
+                        {% endif %}
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
