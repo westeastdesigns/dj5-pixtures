@@ -63,8 +63,8 @@ def dashboard(request):
 
     Returns:
         HttpResponse: account/dashboard.html
-        dict: includes section:dashboard, and actions:actions which will show the first 
-        10 actions returned. In the :model:`actions.Action` the ordering is set to return 
+        dict: includes section:dashboard, and actions:actions which will show the first
+        10 actions returned. In the :model:`actions.Action` the ordering is set to return
         the most recent items first, so a list of the most recent 10 items are returned.
     """
     # display all actions by default
@@ -73,7 +73,9 @@ def dashboard(request):
     if following_ids:
         # if the user is following others, retrieve only their actions
         actions = actions.filter(user_id__in=following_ids)
-    actions = actions[:10]
+    actions = actions.select_related("user", "user__profile").prefetch_related(
+        "target"
+    )[:10]
     return render(
         request, "account/dashboard.html", {"section": "dashboard", "actions": actions}
     )
