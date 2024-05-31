@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     "easy_thumbnails",
     "social_django",
     # local applications
-    "images.apps.ImagesConfig",
+    "actions.apps.ActionsConfig",  # provides actions for project
+    "images.apps.ImagesConfig",  # manages the images for project
 ]
 
 MIDDLEWARE = [
