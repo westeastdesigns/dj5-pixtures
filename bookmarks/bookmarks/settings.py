@@ -191,3 +191,8 @@ INTERNAL_IPS = [
 #     import mimetypes
 #     mimetypes.add_type('application/javascript', '.js', True)
 #     mimetypes.add_type('text/css', '.css', True)
+
+# these settings for the Redis server integrate Redis into the project
+REDIS_HOST = "localhost"
+REDIS_PORT = 6379
+REDIS_DB = 0
