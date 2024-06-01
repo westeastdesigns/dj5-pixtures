@@ -18,6 +18,7 @@ class Image(models.Model):
         (TextField) description: optional description of image
         (DatetimeField) created: when the object was created in the database
         (ManyToManyField) users_like: stores the users who like an image
+        (PositiveIntegerField) total_likes: counts the number of people who like an image
 
     Returns:
         string: title
@@ -35,12 +36,16 @@ class Image(models.Model):
     description = models.TextField(blank=True)
     created = models.DateTimeField(auto_now_add=True)
     users_like = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, related_name="images_liked", blank=True
+        settings.AUTH_USER_MODEL,
+        related_name="images_liked",
+        blank=True,
     )
+    total_likes = models.PositiveIntegerField(default=0)
 
     class Meta:
         indexes = [
             models.Index(fields=["-created"]),
+            models.Index(fields=["-total_likes"]),
         ]
         ordering = ["-created"]
 
