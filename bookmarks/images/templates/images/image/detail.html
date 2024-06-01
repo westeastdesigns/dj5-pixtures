@@ -8,7 +8,7 @@
     <a href="{{ image.image.url }}">
         <img src="{% thumbnail image.image 300x0 quality=80 %}" alt="{{ image.title }}" class="image-detail">
     </a>
-    {% with total_likes=image.users_like.count %}
+    {% with total_likes=image.users_like.count users_like=image.users_like.all %}
         <div class="image-info">
             <div>
                 <span class="count">
@@ -23,10 +23,10 @@
                     {% endif %}
                 </a>
             </div>
-            {{ image_description|linebreaks }}
+            {{ image.description|linebreaks }}
         </div>
         <div class="image-likes">
-            {% for user in image.users_like.all %}
+            {% for user in users_like %}
                 <div>
                     {% if user.profile.photo %}
                         <img src="{{ user.profile.photo.url }}" alt="{{ user.profile.photo.url }}">
