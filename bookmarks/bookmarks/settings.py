@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # admindocs
     "django.contrib.admindocs",
-    # third-party packages
+    # third-party applications
+    "debug_toolbar",
     "django_extensions",
     "easy_thumbnails",
     "social_django",
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -178,3 +180,14 @@ SOCIAL_AUTH_PIPELINE = [
 ABSOLUTE_URL_OVERRIDES = {
     "auth.user": lambda u: reverse_lazy("user_detail", args=[u.username])
 }
+
+# Django Debug Toolbar only displays if the IP debugging from matches an entry here
+INTERNAL_IPS = [
+    "127.0.0.1",
+]
+
+# if MIME type errors occur, apply the correct mapping for JavaScript & CSS
+# if DEBUG:
+#     import mimetypes
+#     mimetypes.add_type('application/javascript', '.js', True)
+#     mimetypes.add_type('text/css', '.css', True)
