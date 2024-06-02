@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_POST
 
 from .forms import LoginForm, ProfileEditForm, UserEditForm, UserRegistrationForm
-from .models import Contact, Profile
+from .models import Contact
 
 # retrieve the Django User model dynamically
 User = get_user_model()
@@ -101,13 +101,13 @@ def register(request):
             new_user.set_password(user_form.cleaned_data["password"])
             # Save the User object
             new_user.save()
-            # Create user profile
-            Profile.objects.create(user=new_user)
-            create_action(new_user, "has created an account")
+            # User profile creation is now handled by the signal
+            # Profile.objects.create(user=new_user)
+            # create_action(new_user, "has created an account")
             return render(
                 request,
                 "account/register_done.html",
-                {"new_user": new_user},
+                {"new_user": new_user}
             )
     else:
         user_form = UserRegistrationForm()
